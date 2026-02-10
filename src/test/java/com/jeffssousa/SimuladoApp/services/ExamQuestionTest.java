@@ -69,52 +69,15 @@ public class ExamQuestionTest {
 
 
             when(examQuestionRepository.save(any(ExamQuestion.class))).thenReturn(examQuestion);
-            when(examRepository.findById(anyLong())).thenReturn(Optional.of(exam));
-            when(questionRepository.findById(any(UUID.class))).thenReturn(Optional.of(question));
 
-            ExamQuestion savedExamQuestion = examQuestionService.save(examQuestion, 1L, question.getQuestionId());
+            ExamQuestion savedExamQuestion = examQuestionService.save(examQuestion);
 
             verify(examQuestionRepository, times(1)).save(any(ExamQuestion.class));
-            verify(examRepository, times(1)).findById(anyLong());
-            verify(questionRepository, times(1)).findById(any(UUID.class));
 
             assertNotNull(savedExamQuestion);
             assertEquals(exam.getExamId(),savedExamQuestion.getExam().getExamId());
             assertEquals(question.getQuestionId(), savedExamQuestion.getQuestion().getQuestionId());
 
-        }
-
-        @Test
-        @DisplayName("Deve retornar uma exceção caso o Simulado/Exame não exista")
-        void shouldThrowExceptionWhenExamNotFound(){
-
-            when(examRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-            EntityNotFoundException e = assertThrows(
-                    EntityNotFoundException.class,
-                    () -> examQuestionService.save(any(ExamQuestion.class), 1L, UUID.randomUUID())
-            );
-
-            verify(examRepository, times(1)).findById(anyLong());
-            assertEquals("Simulado não encontrado!", e.getMessage());
-        }
-
-        @Test
-        @DisplayName("Deve retornar uma exceção caso a Questão não exista")
-        void shouldThrowExceptionWhenQuestionNotFound(){
-
-            Exam exam = ExamTestBuilder.anExam().build();
-
-            when(questionRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
-            when(examRepository.findById(anyLong())).thenReturn(Optional.of(exam));
-
-            EntityNotFoundException e = assertThrows(
-                    EntityNotFoundException.class,
-                    () -> examQuestionService.save(any(ExamQuestion.class), 1L, UUID.randomUUID())
-            );
-
-            verify(questionRepository, times(1)).findById(any(UUID.class));
-            assertEquals("Questão não encontrada!", e.getMessage());
         }
 
     }

@@ -18,22 +18,8 @@ public class ExamQuestionService {
 
     private final ExamQuestionRepository repository;
 
-    private final ExamRepository examRepository;
 
-    private final QuestionRepository questionRepository;
-
-
-    public ExamQuestion save(ExamQuestion examQuestion, Long examId, UUID questionId) {
-
-        Exam exam = examRepository.findById(examId)
-                                    .orElseThrow(() -> new EntityNotFoundException("Simulado não encontrado!"));
-
-        Question question = questionRepository.findById(questionId)
-                                    .orElseThrow(() -> new EntityNotFoundException("Questão não encontrada!"));
-
-        examQuestion.setExam(exam);
-        examQuestion.setQuestion(question);
-
+    public ExamQuestion save(ExamQuestion examQuestion) {
         return repository.save(examQuestion);
     }
 
