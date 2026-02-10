@@ -4,6 +4,7 @@ import com.jeffssousa.SimuladoApp.builders.ExamTestBuilder;
 import com.jeffssousa.SimuladoApp.entities.Exam;
 import com.jeffssousa.SimuladoApp.repository.ExamRepository;
 import com.jeffssousa.SimuladoApp.service.ExamService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,8 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static java.util.Optional.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -49,6 +49,45 @@ public class ExamServiceTest {
 
             assertNotNull(salvedExam);
             assertEquals(salvedExam.getCategory(), exam.getCategory());
+        }
+
+    }
+
+    @Nested
+    class findById{
+
+        @Test
+        @DisplayName("Deve buscar um Simulado/Exame pelo id com sucesso")
+        void shouldFindByIdAExamWithSuccess(){
+
+            Exam exam = ExamTestBuilder.anExam()
+                                            .withExamId(1L)
+                                            .build();
+
+            when(examRepository.findById(anyLong())).thenReturn(Optional.of(exam));
+
+            Exam returnedExam = examService.findById(1L);
+
+            verify(examRepository, times(1)).findById(anyLong());
+
+            assertNotNull(returnedExam);
+            assertEquals(exam.getCategory(), returnedExam.getCategory());
+        }
+
+
+        @Test
+        @DisplayName("Deve retornar uma exceção caso o Simulado/Exame não exista")
+        void shouldThrowExceptionWhenExamNotFound(){
+
+            when(examRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+            EntityNotFoundException e = assertThrows(
+                                        EntityNotFoundException.class,
+                                        () -> examService.findById(1L)
+                                        );
+
+            verify(examRepository, times(1)).findById(anyLong());
+            assertEquals("Simulado não encontrado!", e.getMessage());
         }
 
     }
