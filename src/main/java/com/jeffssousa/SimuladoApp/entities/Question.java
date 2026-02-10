@@ -1,12 +1,20 @@
 package com.jeffssousa.SimuladoApp.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tb_question")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Question {
 
 
