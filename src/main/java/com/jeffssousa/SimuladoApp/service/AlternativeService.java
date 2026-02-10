@@ -17,10 +17,19 @@ public class AlternativeService {
 
     private final AlternativeRepository alternativeRepository;
 
+    private final QuestionRepository questionRepository;
 
     public List<Alternative> saveAll(List<Alternative> alternatives, UUID questionId) {
 
+        Question question = questionRepository.findById(questionId)
+                                                .orElseThrow(() -> new EntityNotFoundException("Questão não encontrada"));
+
+        linkedAlternativesToQuestion(alternatives, question);
         return alternativeRepository.saveAll(alternatives);
+    }
+
+    private void linkedAlternativesToQuestion(List<Alternative> list, Question question){
+        list.forEach(a -> a.setQuestion(question));
     }
 
 }

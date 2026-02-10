@@ -39,16 +39,10 @@ public class CreateQuestionUseCaseImpl implements CreateQuestionUseCase{
         examQuestionService.save(examQuestion);
 
 
-        linkedAlternativesToQuestion(alternatives,question);
         alternativeService.saveAll(alternatives, question.getQuestionId());
 
         return question;
 
-    }
-
-
-    private void linkedAlternativesToQuestion(List<Alternative> list, Question question){
-        list.forEach(a -> a.setQuestion(question));
     }
 
     private ExamQuestion linkedExamQuestion(Exam exam, Question question){

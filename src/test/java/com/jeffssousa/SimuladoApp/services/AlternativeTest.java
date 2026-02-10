@@ -48,10 +48,12 @@ public class AlternativeTest {
         @DisplayName("Deve criar todas as alternativas com sucesso")
         void shouldCreateAllAlternativesWithSuccess(){
 
+            UUID questionId = UUID.randomUUID();
             Question question = QuestionTestBuilder
                                         .aQuestion()
-                                        .withQuestionId(UUID.randomUUID())
+                                        .withQuestionId(questionId)
                                         .build();
+
 
             List<Alternative> list = Arrays.asList(
                                     AlternativeTestBuilder.anAlternative().withDescription("Manaus").build(),
@@ -62,8 +64,9 @@ public class AlternativeTest {
                                     );
 
             when(repository.saveAll(anyList())).thenReturn(list);
+            when(questionRepository.findById(any(UUID.class))).thenReturn(Optional.of(question));
 
-            List<Alternative> savedList = alternativeService.saveAll(list, UUID.randomUUID());
+            List<Alternative> savedList = alternativeService.saveAll(list, questionId);
 
             verify(repository,times(1)).saveAll(anyList());
 
@@ -71,7 +74,10 @@ public class AlternativeTest {
             assertEquals(list.getFirst().getDescription(),savedList.getFirst().getDescription());
             assertEquals(list.size(),savedList.size());
             assertEquals(list.get(4).isCorrect(), savedList.get(4).isCorrect());
-
+            assertEquals(
+                        questionId,
+                        savedList.getFirst().getQuestion().getQuestionId()
+                        );
         }
 
 
