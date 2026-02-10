@@ -17,14 +17,8 @@ public class AlternativeService {
 
     private final AlternativeRepository alternativeRepository;
 
-    private final QuestionRepository questionRepository;
-
 
     public List<Alternative> saveAll(List<Alternative> alternatives, UUID questionId) {
-
-        if(!questionRepository.existsById(questionId)){
-            throw new EntityNotFoundException("Questão não encontrada!");
-        }
 
         return alternativeRepository.saveAll(alternatives);
     }

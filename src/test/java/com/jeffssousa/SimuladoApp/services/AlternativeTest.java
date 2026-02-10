@@ -62,8 +62,6 @@ public class AlternativeTest {
                                     );
 
             when(repository.saveAll(anyList())).thenReturn(list);
-            when(questionRepository.existsById(any(UUID.class))).thenReturn(true);
-
 
             List<Alternative> savedList = alternativeService.saveAll(list, UUID.randomUUID());
 
@@ -76,22 +74,6 @@ public class AlternativeTest {
 
         }
 
-        @Test
-        @DisplayName("Deve retornar uma exceção caso a Questão não exista")
-        void shouldThrowExceptionWhenQuestionNotFound(){
-
-            Exam exam = ExamTestBuilder.anExam().build();
-
-            when(questionRepository.existsById(any(UUID.class))).thenReturn(false);
-
-            EntityNotFoundException e = assertThrows(
-                    EntityNotFoundException.class,
-                    () -> alternativeService.saveAll(anyList(), UUID.randomUUID())
-            );
-
-            verify(questionRepository, times(1)).existsById(any(UUID.class));
-            assertEquals("Questão não encontrada!", e.getMessage());
-        }
 
     }
 
