@@ -1,11 +1,19 @@
 package com.jeffssousa.SimuladoApp.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "tb_examQuestion")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExamQuestion {
 
     @Id
