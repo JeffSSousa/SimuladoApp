@@ -1,6 +1,10 @@
 package com.jeffssousa.SimuladoApp.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.List;
@@ -8,6 +12,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_examResult")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExamResult {
 
 
@@ -31,4 +39,13 @@ public class ExamResult {
 
     @OneToMany(mappedBy = "examResult")
     private List<UserAnswer> userAnswers;
+
+    public void start(int totalQuestions) {
+        this.status = "IN_PROGRESS";
+        this.initialTimestamp = Instant.now();
+        this.currentQuestion = 1;
+        this.totalQuestion = totalQuestions;
+        this.correctAnswers = 0;
+        this.finishedTimestamp = null;
+    }
 }
