@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -39,6 +40,9 @@ public class ExamResult {
 
     @OneToMany(mappedBy = "examResult")
     private List<UserAnswer> userAnswers;
+
+    @OneToMany(mappedBy = "examResult")
+    private List<ExamResultQuestion> examResultQuestions;
 
     public void start(int totalQuestions) {
         this.status = "IN_PROGRESS";

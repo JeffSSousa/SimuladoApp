@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -33,5 +34,8 @@ public class Question {
 
     @OneToMany(mappedBy = "question")
     private List<UserAnswer> userAnswers;
+
+    @OneToMany(mappedBy = "question")
+    private List<ExamResultQuestion> examResultQuestions;
 
 }
