@@ -1,10 +1,7 @@
 package com.jeffssousa.SimuladoApp.service;
 
 import com.jeffssousa.SimuladoApp.entities.*;
-import com.jeffssousa.SimuladoApp.repository.AlternativeRepository;
-import com.jeffssousa.SimuladoApp.repository.ExamRepository;
-import com.jeffssousa.SimuladoApp.repository.ExamResultQuestionRepository;
-import com.jeffssousa.SimuladoApp.repository.ExamResultRepository;
+import com.jeffssousa.SimuladoApp.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +21,10 @@ public class ExamSessionService {
     private final ExamResultQuestionRepository examResultQuestionRepository;
 
     private final AlternativeRepository alternativeRepository;
+
+    private final QuestionRepository questionRepository;
+
+    private final UserAnswerRepository userAnswerRepository;
 
     public ExamResult start(ExamResult examResult, long examId) {
 
@@ -48,6 +49,29 @@ public class ExamSessionService {
         List<Alternative> alternatives = alternativeRepository.findAllByQuestion(question);
 
         return question;
+    }
+
+    public UserAnswer answerQuestion(UUID examResultId, UUID questionId, UUID alternativeId) {
+
+        ExamResult examResult = examResultRepository.findById(examResultId)
+                .orElseThrow(() -> new EntityNotFoundException("Tentativa não encontrada"));
+
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new EntityNotFoundException("Questão não foi encontrada"));
+
+        Alternative alternative = alternativeRepository.findById(alternativeId)
+                .orElseThrow(() -> new EntityNotFoundException("Alternativa não encontrada"));
+
+
+        UserAnswer userAnswer = new UserAnswer();
+        userAnswer.setExamResult(examResult);
+        userAnswer.setQuestion(question);
+        userAnswer.setAlternative(alternative);
+        return userAnswerRepository.save(userAnswer);
+
+        //adicionar metodo mais um
+        //adicionar metodo que marca como respondido
+
     }
 
     private Question currentQuestion(List<ExamResultQuestion> questions) {

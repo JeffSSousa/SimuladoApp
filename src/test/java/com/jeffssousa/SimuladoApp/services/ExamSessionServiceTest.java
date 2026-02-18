@@ -38,6 +38,9 @@ public class ExamSessionServiceTest {
     @Mock
     private AlternativeRepository alternativeRepository;
 
+    @Mock
+    private UserAnswerRepository userAnswerRepository;
+
     @InjectMocks
     private ExamSessionService examSessionService;
 
@@ -123,6 +126,65 @@ public class ExamSessionServiceTest {
 
             assertNotNull(savedQuestion);
             assertEquals(question.getQuestionId(),savedQuestion.getQuestionId());
+
+        }
+
+    }
+
+    @Nested
+    class answerCurrentQuestion{
+
+        @Test
+        @DisplayName("Deve Responder a questão atual da tentativa com sucesso")
+        void shouldAnswerCurrentQuestionWithSuccess(){
+
+            //Receber Id da tentativa, e a alternativa desejada, deve receber a questão que deseja responder
+            //Devo buscar a tentativa, a alternativa escolhida e a questão que deseja responder
+            //criar o objeto e salvar dados nele
+            //salvar no banco
+            // acrescentar mais para o status atual
+            // finalizar
+
+
+            UUID examResultId = UUID.randomUUID();
+            UUID alternativeId = UUID.randomUUID();
+            UUID questionId = UUID.randomUUID();
+
+            ExamResult examResult = ExamResultTestBuilder
+                                    .anExamResult()
+                                    .withExamResultId(examResultId)
+                                    .build();
+
+            Question question = QuestionTestBuilder
+                                        .aQuestion()
+                                        .withQuestionId(questionId)
+                                        .build();
+
+
+            Alternative alternative = AlternativeTestBuilder
+                                        .anAlternative()
+                                        .withAlternativeId(alternativeId)
+                                        .build();
+
+
+            UserAnswer userAnswer = UserAnswerTestBuilder
+                                        .builder()
+                                        .withExamResult(examResult)
+                                        .withQuestion(question)
+                                        .withAlternative(alternative)
+                                                .build();
+
+
+            when(examResultRepository.findById(examResultId)).thenReturn(Optional.of(examResult));
+            when(alternativeRepository.findById(alternativeId)).thenReturn(Optional.of(alternative));
+            when(questionRepository.findById(questionId)).thenReturn(Optional.of(question));
+            when(userAnswerRepository.save(any(UserAnswer.class))).thenReturn(userAnswer);
+
+
+            UserAnswer savedUserAnswer = examSessionService.answerQuestion(examResultId, questionId, alternativeId);
+
+            assertNotNull(savedUserAnswer);
+            assertEquals(userAnswer.getQuestion().getDescription(),savedUserAnswer.getQuestion().getDescription());
 
         }
 
