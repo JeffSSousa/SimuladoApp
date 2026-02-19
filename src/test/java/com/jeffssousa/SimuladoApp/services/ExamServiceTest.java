@@ -1,7 +1,9 @@
 package com.jeffssousa.SimuladoApp.services;
 
 import com.jeffssousa.SimuladoApp.builders.ExamTestBuilder;
+import com.jeffssousa.SimuladoApp.dto.ExamRequestDTO;
 import com.jeffssousa.SimuladoApp.entities.Exam;
+import com.jeffssousa.SimuladoApp.mapper.ExamMapper;
 import com.jeffssousa.SimuladoApp.repository.ExamRepository;
 import com.jeffssousa.SimuladoApp.service.ExamService;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +26,8 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 public class ExamServiceTest {
 
+    @Mock
+    private ExamMapper mapper;
 
     @Mock
     private ExamRepository examRepository;
@@ -38,12 +42,14 @@ public class ExamServiceTest {
         @DisplayName("Deve criar um Simulado/Exame com sucesso")
         void shouldCreateAExamWithSuccess(){
 
+
             Exam exam = ExamTestBuilder.anExam().build();
+            ExamRequestDTO examRequestDTO = new ExamRequestDTO(exam.getCategory());
+
             when(examRepository.save(any(Exam.class))).thenReturn(exam);
+            when(mapper.toEntity(any(ExamRequestDTO.class))).thenReturn(exam);
 
-
-            Exam salvedExam = examService.save(exam);
-
+            Exam salvedExam = examService.save(examRequestDTO);
 
             verify(examRepository, times(1)).save(any(Exam.class));
 
