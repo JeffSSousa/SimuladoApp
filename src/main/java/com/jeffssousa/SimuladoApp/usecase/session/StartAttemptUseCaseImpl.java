@@ -19,9 +19,10 @@ public class StartAttemptUseCaseImpl implements StartAttemptUseCase{
     private final ExamResultQuestionService examResultQuestionService;
 
     @Override
-    public ExamResult startAttempt(ExamResult examResult, Long examId) {
+    public ExamResult startAttempt(Long examId) {
 
-        ExamResult examAttempt = examSessionService.start(examResult,examId);
+
+        ExamResult examAttempt = examSessionService.start(examId);
 
         examResultQuestionService.createAll(
                                 examAttempt.getExamResultId(),examId

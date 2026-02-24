@@ -65,7 +65,7 @@ public class ExamSessionServiceTest {
             when(examRepository.findById(anyLong())).thenReturn(Optional.of(exam));
             when(examResultRepository.save(any(ExamResult.class))).thenReturn(examResult);
 
-            ExamResult savedExamResult = examSessionService.start(examResult, 1L);
+            ExamResult savedExamResult = examSessionService.start(1L);
 
             verify(examRepository, times(1)).findById(anyLong());
             verify(examResultRepository, times(1)).save(any(ExamResult.class));

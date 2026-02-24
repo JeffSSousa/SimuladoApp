@@ -56,15 +56,15 @@ public class StartAttemptUseCaseImplTest {
                                                     );
 
 
-        when(examSessionService.start(examResult,examId)).thenReturn(examResult);
+        when(examSessionService.start(examId)).thenReturn(examResult);
         when(examResultQuestionService.createAll(examResultId,examId)).thenReturn(questionList);
 
 
-        ExamResult savedExamResult = startAttemptUseCaseImpl.startAttempt(examResult, examId);
+        ExamResult savedExamResult = startAttemptUseCaseImpl.startAttempt(examId);
 
         InOrder inOrder = Mockito.inOrder(examSessionService,examResultQuestionService);
 
-        inOrder.verify(examSessionService).start(examResult,examId);
+        inOrder.verify(examSessionService).start(examId);
         inOrder.verify(examResultQuestionService).createAll(examResultId,examId);
 
         assertNotNull(savedExamResult);

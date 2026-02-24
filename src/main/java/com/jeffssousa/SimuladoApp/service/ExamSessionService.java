@@ -26,7 +26,9 @@ public class ExamSessionService {
 
     private final UserAnswerRepository userAnswerRepository;
 
-    public ExamResult start(ExamResult examResult, long examId) {
+    public ExamResult start(long examId) {
+
+        ExamResult examResult  = new ExamResult();
 
         Exam exam = examRepository.findById(examId)
                             .orElseThrow(() -> new EntityNotFoundException("Simulado não encontrado!"));

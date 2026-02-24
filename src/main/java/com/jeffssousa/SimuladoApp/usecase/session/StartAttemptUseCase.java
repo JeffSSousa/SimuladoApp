@@ -4,6 +4,6 @@ import com.jeffssousa.SimuladoApp.entities.ExamResult;
 
 public interface StartAttemptUseCase {
 
-    ExamResult startAttempt (ExamResult examResult, Long examId);
+    ExamResult startAttempt (Long examId);
 
 }
