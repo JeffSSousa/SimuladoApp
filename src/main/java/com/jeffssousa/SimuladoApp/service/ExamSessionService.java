@@ -1,11 +1,16 @@
 package com.jeffssousa.SimuladoApp.service;
 
+import com.jeffssousa.SimuladoApp.dto.AlternativeResponseDTO;
+import com.jeffssousa.SimuladoApp.dto.AnswerQuestionDTO;
+import com.jeffssousa.SimuladoApp.dto.QuestionAlternativeResponseDTO;
 import com.jeffssousa.SimuladoApp.entities.*;
+import com.jeffssousa.SimuladoApp.mapper.AlternativeMapper;
 import com.jeffssousa.SimuladoApp.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +31,8 @@ public class ExamSessionService {
 
     private final UserAnswerRepository userAnswerRepository;
 
+    private final AlternativeMapper alternativeMapper;
+
     public ExamResult start(long examId) {
 
         ExamResult examResult  = new ExamResult();
@@ -39,7 +46,7 @@ public class ExamSessionService {
         return examResultRepository.save(examResult);
     }
 
-    public Question getCurrentQuestion(UUID examResultId) {
+    public QuestionAlternativeResponseDTO getCurrentQuestion(UUID examResultId) {
 
         ExamResult examResult = examResultRepository.findById(examResultId)
                 .orElseThrow(() -> new EntityNotFoundException("Tentativa não foi encontrada"));
@@ -50,18 +57,27 @@ public class ExamSessionService {
 
         List<Alternative> alternatives = alternativeRepository.findAllByQuestion(question);
 
-        return question;
+        List<AlternativeResponseDTO> alternativesDto = alternatives
+                                                        .stream()
+                                                        .map(alternativeMapper::toDTO)
+                                                        .toList();
+
+        return new QuestionAlternativeResponseDTO(
+                    question.getQuestionId(),
+                    question.getDescription(),
+                    alternativesDto
+        );
     }
 
-    public UserAnswer answerQuestion(UUID examResultId, UUID questionId, UUID alternativeId) {
+    public UserAnswer answerQuestion(AnswerQuestionDTO dto) {
 
-        ExamResult examResult = examResultRepository.findById(examResultId)
+        ExamResult examResult = examResultRepository.findById(dto.examResultId())
                 .orElseThrow(() -> new EntityNotFoundException("Tentativa não encontrada"));
 
-        Question question = questionRepository.findById(questionId)
+        Question question = questionRepository.findById(dto.questionId())
                 .orElseThrow(() -> new EntityNotFoundException("Questão não foi encontrada"));
 
-        Alternative alternative = alternativeRepository.findById(alternativeId)
+        Alternative alternative = alternativeRepository.findById(dto.alternativeId())
                 .orElseThrow(() -> new EntityNotFoundException("Alternativa não encontrada"));
 
 

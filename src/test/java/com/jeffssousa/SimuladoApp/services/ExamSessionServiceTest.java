@@ -1,7 +1,11 @@
 package com.jeffssousa.SimuladoApp.services;
 
 import com.jeffssousa.SimuladoApp.builders.*;
+import com.jeffssousa.SimuladoApp.dto.AlternativeResponseDTO;
+import com.jeffssousa.SimuladoApp.dto.AnswerQuestionDTO;
+import com.jeffssousa.SimuladoApp.dto.QuestionAlternativeResponseDTO;
 import com.jeffssousa.SimuladoApp.entities.*;
+import com.jeffssousa.SimuladoApp.mapper.AlternativeMapper;
 import com.jeffssousa.SimuladoApp.repository.*;
 import com.jeffssousa.SimuladoApp.service.ExamQuestionService;
 import com.jeffssousa.SimuladoApp.service.ExamSessionService;
@@ -40,6 +44,9 @@ public class ExamSessionServiceTest {
 
     @Mock
     private UserAnswerRepository userAnswerRepository;
+
+    @Mock
+    private AlternativeMapper alternativeMapper;
 
     @InjectMocks
     private ExamSessionService examSessionService;
@@ -109,23 +116,44 @@ public class ExamSessionServiceTest {
                     AlternativeTestBuilder.anAlternative().withDescription("Brasilia").correct().build()
             );
 
+            List<AlternativeResponseDTO> alternatives = new ArrayList<>();
+            list.forEach(a -> alternatives.add(
+                                        new AlternativeResponseDTO(a.getAlternativeId(),
+                                                                    a.getDescription()
+                                        ))
+                        );
 
+            QuestionAlternativeResponseDTO dto = new QuestionAlternativeResponseDTO(
+                    question.getQuestionId(),
+                    question.getDescription(),
+                    alternatives
+                );
+
+            when(alternativeMapper.toDTO(any(Alternative.class))).thenReturn(
+                    new AlternativeResponseDTO(alternatives.getFirst().alternativeId(), "Manaus"),
+                    new AlternativeResponseDTO(alternatives.get(1).alternativeId(),"Rio de Janeiro"),
+                    new AlternativeResponseDTO(alternatives.get(2).alternativeId(),"São Paulo"),
+                    new AlternativeResponseDTO(alternatives.get(3).alternativeId(),"Fortaleza"),
+                    new AlternativeResponseDTO(alternatives.getLast().alternativeId(),"Brasilia")
+            );
             when(examResultRepository.findById(examResultId)).thenReturn(Optional.of(examResult));
             when(examResultQuestionRepository.findAllByExamResult(examResult)).thenReturn(questionList);
-            when(questionRepository.findById(question.getQuestionId())).thenReturn(Optional.of(question));
             when(alternativeRepository.findAllByQuestion(question)).thenReturn(list);
 
 
-            Question savedQuestion = examSessionService.getCurrentQuestion(examResultId);
+            QuestionAlternativeResponseDTO responseDTO = examSessionService.getCurrentQuestion(examResultId);
 
 
             verify(examResultRepository, times(1)).findById(examResultId);
             verify(examResultQuestionRepository, times(1)).findAllByExamResult(examResult);
-            verify(questionRepository, times(1)).findById(question.getQuestionId());
             verify(alternativeRepository, times(1)).findAllByQuestion(question);
 
-            assertNotNull(savedQuestion);
-            assertEquals(question.getQuestionId(),savedQuestion.getQuestionId());
+            assertNotNull(responseDTO);
+            assertEquals(question.getDescription(), responseDTO.description());
+            assertEquals(question.getQuestionId(),responseDTO.questionId());
+            assertEquals(alternatives.size(),responseDTO.alternatives().size());
+            assertEquals(alternatives.getFirst(),responseDTO.alternatives().getFirst());
+            assertEquals(alternatives.getLast(),responseDTO.alternatives().getLast());
 
         }
 
@@ -138,10 +166,6 @@ public class ExamSessionServiceTest {
         @DisplayName("Deve Responder a questão atual da tentativa com sucesso")
         void shouldAnswerCurrentQuestionWithSuccess(){
 
-            //Receber Id da tentativa, e a alternativa desejada, deve receber a questão que deseja responder
-            //Devo buscar a tentativa, a alternativa escolhida e a questão que deseja responder
-            //criar o objeto e salvar dados nele
-            //salvar no banco
             // acrescentar mais para o status atual
             // finalizar
 
@@ -174,6 +198,11 @@ public class ExamSessionServiceTest {
                                         .withAlternative(alternative)
                                                 .build();
 
+            AnswerQuestionDTO dto = new AnswerQuestionDTO(
+                                        examResultId,
+                                        questionId,
+                                        alternativeId
+            );
 
             when(examResultRepository.findById(examResultId)).thenReturn(Optional.of(examResult));
             when(alternativeRepository.findById(alternativeId)).thenReturn(Optional.of(alternative));
@@ -181,7 +210,7 @@ public class ExamSessionServiceTest {
             when(userAnswerRepository.save(any(UserAnswer.class))).thenReturn(userAnswer);
 
 
-            UserAnswer savedUserAnswer = examSessionService.answerQuestion(examResultId, questionId, alternativeId);
+            UserAnswer savedUserAnswer = examSessionService.answerQuestion(dto);
 
             assertNotNull(savedUserAnswer);
             assertEquals(userAnswer.getQuestion().getDescription(),savedUserAnswer.getQuestion().getDescription());
