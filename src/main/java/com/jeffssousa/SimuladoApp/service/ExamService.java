@@ -26,7 +26,7 @@ public class ExamService {
     public Exam findById(long id) {
 
         return repository.findById(id)
-                                .orElseThrow(() -> new EntityNotFoundException("Simulado não encontrado!"));
+                .orElseThrow(() -> new EntityNotFoundException("Simulado não encontrado!"));
 
     }
 }

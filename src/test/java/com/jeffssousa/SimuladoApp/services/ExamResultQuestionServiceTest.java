@@ -48,9 +48,9 @@ public class ExamResultQuestionServiceTest {
         UUID examResultId = UUID.randomUUID();
         Long examId = 1L;
         ExamResult examResult = ExamResultTestBuilder
-                                    .anExamResult()
-                                    .withExamResultId(examResultId)
-                                    .build();
+                .anExamResult()
+                .withExamResultId(examResultId)
+                .build();
 
         List<Question> listQuestion = List.of(
                     QuestionTestBuilder.aQuestion().build(),

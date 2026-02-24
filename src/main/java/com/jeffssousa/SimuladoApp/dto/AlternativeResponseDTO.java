@@ -5,5 +5,5 @@ import java.util.UUID;
 public record AlternativeResponseDTO(
         UUID alternativeId,
         String description
-    ) {
+    ){
 }

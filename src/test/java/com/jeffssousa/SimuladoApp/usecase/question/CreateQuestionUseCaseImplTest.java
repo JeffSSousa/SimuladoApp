@@ -69,10 +69,10 @@ public class CreateQuestionUseCaseImplTest {
             Question question = QuestionTestBuilder.aQuestion().build();
 
             ExamQuestion examQuestion = ExamQuestionTestBuilder
-                                        .anExamQuestion()
-                                        .withQuestion(question)
-                                        .withExam(exam)
-                                        .build();
+                    .anExamQuestion()
+                    .withQuestion(question)
+                    .withExam(exam)
+                    .build();
 
             List<Alternative> list = Arrays.asList(
                     AlternativeTestBuilder.anAlternative().withDescription("Manaus").build(),

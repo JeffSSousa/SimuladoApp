@@ -7,5 +7,5 @@ public record QuestionAlternativeResponseDTO(
         UUID questionId,
         String description,
         List<AlternativeResponseDTO> alternatives
-    ) {
+    ){
 }

@@ -50,18 +50,18 @@ public class AlternativeTest {
 
             UUID questionId = UUID.randomUUID();
             Question question = QuestionTestBuilder
-                                        .aQuestion()
-                                        .withQuestionId(questionId)
-                                        .build();
+                    .aQuestion()
+                    .withQuestionId(questionId)
+                    .build();
 
 
             List<Alternative> list = Arrays.asList(
-                                    AlternativeTestBuilder.anAlternative().withDescription("Manaus").build(),
-                                    AlternativeTestBuilder.anAlternative().withDescription("Rio de Janeiro").build(),
-                                    AlternativeTestBuilder.anAlternative().withDescription("São Paulo").build(),
-                                    AlternativeTestBuilder.anAlternative().withDescription("Fortaleza").build(),
-                                    AlternativeTestBuilder.anAlternative().withDescription("Brasilia").correct().build()
-                                    );
+                    AlternativeTestBuilder.anAlternative().withDescription("Manaus").build(),
+                    AlternativeTestBuilder.anAlternative().withDescription("Rio de Janeiro").build(),
+                    AlternativeTestBuilder.anAlternative().withDescription("São Paulo").build(),
+                    AlternativeTestBuilder.anAlternative().withDescription("Fortaleza").build(),
+                    AlternativeTestBuilder.anAlternative().withDescription("Brasilia").correct().build()
+            );
 
             when(repository.saveAll(anyList())).thenReturn(list);
             when(questionRepository.findById(any(UUID.class))).thenReturn(Optional.of(question));

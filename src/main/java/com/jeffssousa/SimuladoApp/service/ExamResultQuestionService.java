@@ -26,7 +26,7 @@ public class ExamResultQuestionService {
     public List<ExamResultQuestion> createAll(UUID examResultId, Long examId) {
 
         ExamResult examResult = examResultRepository.findById(examResultId)
-                                                    .orElseThrow(() -> new EntityNotFoundException("Tentativa não encontrada!"));
+                .orElseThrow(() -> new EntityNotFoundException("Tentativa não encontrada!"));
 
         List<Question> questions = examQuestionRepository.findQuestionsByExamId(examId);
 

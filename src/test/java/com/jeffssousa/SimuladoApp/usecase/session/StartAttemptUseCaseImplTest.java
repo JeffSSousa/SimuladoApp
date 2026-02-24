@@ -46,9 +46,9 @@ public class StartAttemptUseCaseImplTest {
         Long examId = 1L;
 
         ExamResult examResult = ExamResultTestBuilder
-                                    .anExamResult()
-                                    .withExamResultId(examResultId)
-                                    .build();
+                .anExamResult()
+                .withExamResultId(examResultId)
+                .build();
 
         List<ExamResultQuestion> questionList = List.of(
                 ExamResultQuestionTestBuilder.anExamResultQuestion().withExamResult(examResult).build(),

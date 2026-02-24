@@ -175,33 +175,33 @@ public class ExamSessionServiceTest {
             UUID questionId = UUID.randomUUID();
 
             ExamResult examResult = ExamResultTestBuilder
-                                    .anExamResult()
-                                    .withExamResultId(examResultId)
-                                    .build();
+                    .anExamResult()
+                    .withExamResultId(examResultId)
+                    .build();
 
             Question question = QuestionTestBuilder
-                                        .aQuestion()
-                                        .withQuestionId(questionId)
-                                        .build();
+                    .aQuestion()
+                    .withQuestionId(questionId)
+                    .build();
 
 
             Alternative alternative = AlternativeTestBuilder
-                                        .anAlternative()
-                                        .withAlternativeId(alternativeId)
-                                        .build();
+                    .anAlternative()
+                    .withAlternativeId(alternativeId)
+                    .build();
 
 
             UserAnswer userAnswer = UserAnswerTestBuilder
-                                        .builder()
-                                        .withExamResult(examResult)
-                                        .withQuestion(question)
-                                        .withAlternative(alternative)
-                                                .build();
+                    .builder()
+                    .withExamResult(examResult)
+                    .withQuestion(question)
+                    .withAlternative(alternative)
+                    .build();
 
             AnswerQuestionDTO dto = new AnswerQuestionDTO(
-                                        examResultId,
-                                        questionId,
-                                        alternativeId
+                    examResultId,
+                    questionId,
+                    alternativeId
             );
 
             when(examResultRepository.findById(examResultId)).thenReturn(Optional.of(examResult));

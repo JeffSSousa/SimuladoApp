@@ -67,8 +67,8 @@ public class ExamServiceTest {
         void shouldFindByIdAExamWithSuccess(){
 
             Exam exam = ExamTestBuilder.anExam()
-                                            .withExamId(1L)
-                                            .build();
+                    .withExamId(1L)
+                    .build();
 
             when(examRepository.findById(anyLong())).thenReturn(Optional.of(exam));
 

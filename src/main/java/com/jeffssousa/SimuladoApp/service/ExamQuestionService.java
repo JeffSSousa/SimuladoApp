@@ -12,7 +12,6 @@ public class ExamQuestionService {
 
     private final ExamQuestionRepository repository;
 
-
     public ExamQuestion save(ExamQuestion examQuestion) {
         return repository.save(examQuestion);
     }

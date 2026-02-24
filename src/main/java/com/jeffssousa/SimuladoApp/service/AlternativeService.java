@@ -22,7 +22,7 @@ public class AlternativeService {
     public List<Alternative> saveAll(List<Alternative> alternatives, UUID questionId) {
 
         Question question = questionRepository.findById(questionId)
-                                                .orElseThrow(() -> new EntityNotFoundException("Questão não encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException("Questão não encontrada"));
 
         linkedAlternativesToQuestion(alternatives, question);
         return alternativeRepository.saveAll(alternatives);

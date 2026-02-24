@@ -25,8 +25,9 @@ public class StartAttemptUseCaseImpl implements StartAttemptUseCase{
         ExamResult examAttempt = examSessionService.start(examId);
 
         examResultQuestionService.createAll(
-                                examAttempt.getExamResultId(),examId
-                                );
+                examAttempt.getExamResultId(),
+                examId
+        );
 
         return examAttempt;
     }

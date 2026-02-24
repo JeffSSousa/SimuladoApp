@@ -60,8 +60,8 @@ public class QuestionServiceTest {
         void shouldFindByIdQuestionWithSuccess(){
 
             Question question = QuestionTestBuilder.aQuestion()
-                                                    .withQuestionId(UUID.randomUUID())
-                                                    .build();
+                    .withQuestionId(UUID.randomUUID())
+                    .build();
 
             when(repository.findById(any(UUID.class))).thenReturn(Optional.of(question));
 

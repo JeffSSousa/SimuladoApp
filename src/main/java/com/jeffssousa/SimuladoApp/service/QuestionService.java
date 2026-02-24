@@ -21,6 +21,6 @@ public class QuestionService {
     public Question findById(UUID questionId) {
 
         return repository.findById(questionId)
-                                        .orElseThrow(() -> new EntityNotFoundException("Questão não encontrada!"));
+                .orElseThrow(() -> new EntityNotFoundException("Questão não encontrada!"));
     }
 }

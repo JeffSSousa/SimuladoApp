@@ -1,7 +1,6 @@
 package com.jeffssousa.SimuladoApp.entities;
 
 import com.jeffssousa.SimuladoApp.builders.ExamResultTestBuilder;
-import com.jeffssousa.SimuladoApp.builders.ExamTestBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +25,6 @@ public class ExamResultTest {
         assertEquals(totalQuestions, examResult.getTotalQuestion());
         assertEquals(0,examResult.getCorrectAnswers());
         assertNull(examResult.getFinishedTimestamp());
-
     }
 
 }

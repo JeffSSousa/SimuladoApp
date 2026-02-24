@@ -7,5 +7,5 @@ public record CreateQuestionDTO(
         String description,
         String category,
         List<AlternativeRequestDTO> alternatives
-    ) {
+    ){
 }
