@@ -1,9 +1,11 @@
 package com.jeffssousa.SimuladoApp.usecase.question;
 
+import com.jeffssousa.SimuladoApp.dto.CreateQuestionDTO;
 import com.jeffssousa.SimuladoApp.entities.Alternative;
 import com.jeffssousa.SimuladoApp.entities.Exam;
 import com.jeffssousa.SimuladoApp.entities.ExamQuestion;
 import com.jeffssousa.SimuladoApp.entities.Question;
+import com.jeffssousa.SimuladoApp.mapper.QuestionAlternativeMapper;
 import com.jeffssousa.SimuladoApp.service.AlternativeService;
 import com.jeffssousa.SimuladoApp.service.ExamQuestionService;
 import com.jeffssousa.SimuladoApp.service.ExamService;
@@ -28,16 +30,23 @@ public class CreateQuestionUseCaseImpl implements CreateQuestionUseCase{
 
     private final ExamService examService;
 
-    @Override
-    public Question createQuestionForExam(Question question, Long examId, List<Alternative> alternatives) {
+    private final QuestionAlternativeMapper mapper;
 
+    @Override
+    public Question createQuestionForExam(CreateQuestionDTO dto) {
+
+
+        Question question = mapper.toEntity(dto);
+        List<Alternative> alternatives = dto.alternatives()
+                .stream()
+                .map(mapper::toEntity)
+                .toList();
 
         question = questionService.save(question);
-        Exam exam = examService.findById(examId);
+        Exam exam = examService.findById(dto.examId());
 
         ExamQuestion examQuestion = linkedExamQuestion(exam,question);
         examQuestionService.save(examQuestion);
-
 
         alternativeService.saveAll(alternatives, question.getQuestionId());
 
