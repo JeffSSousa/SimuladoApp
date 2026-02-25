@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class AlternativeTestBuilder {
 
-    private UUID alternativeId;
+    private Long alternativeId;
     private String description = "Alternativa A";
     private boolean isCorrect = false;
 
@@ -24,7 +24,7 @@ public class AlternativeTestBuilder {
         return new AlternativeTestBuilder();
     }
 
-    public AlternativeTestBuilder withAlternativeId(UUID alternativeId) {
+    public AlternativeTestBuilder withAlternativeId(Long alternativeId) {
         this.alternativeId = alternativeId;
         return this;
     }

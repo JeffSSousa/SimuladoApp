@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tb_alternative")
@@ -19,8 +18,8 @@ public class Alternative {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID alternativeId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long alternativeId;
 
     private String description;
     private boolean correct;

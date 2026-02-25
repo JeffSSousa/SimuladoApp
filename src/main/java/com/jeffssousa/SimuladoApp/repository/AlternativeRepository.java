@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface AlternativeRepository extends JpaRepository<Alternative, UUID> {
+public interface AlternativeRepository extends JpaRepository<Alternative, Long> {
 
     List<Alternative> findAllByQuestion(Question question);
 }

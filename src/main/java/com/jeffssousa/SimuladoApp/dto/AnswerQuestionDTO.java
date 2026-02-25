@@ -5,6 +5,6 @@ import java.util.UUID;
 public record AnswerQuestionDTO(
     UUID examResultId,
     UUID questionId,
-    UUID alternativeId
+    Long alternativeId
     ){
 }

@@ -175,7 +175,7 @@ public class ExamAttemptServiceTest {
 
 
             UUID examResultId = UUID.randomUUID();
-            UUID alternativeId = UUID.randomUUID();
+            Long alternativeId = 1L;
             UUID questionId = UUID.randomUUID();
 
             ExamResult examResult = ExamResultTestBuilder
