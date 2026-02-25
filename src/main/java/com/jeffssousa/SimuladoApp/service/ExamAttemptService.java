@@ -55,15 +55,11 @@ public class ExamAttemptService {
 
         List<Alternative> alternatives = alternativeRepository.findAllByQuestion(question);
 
-        List<AlternativeResponseDTO> alternativesDto = alternatives
-                                                        .stream()
-                                                        .map(alternativeMapper::toDTO)
-                                                        .toList();
 
         return new QuestionAlternativeResponseDTO(
                     question.getQuestionId(),
                     question.getDescription(),
-                    alternativesDto
+                    generateAlternativesDTO(alternatives)
         );
     }
 
@@ -97,5 +93,12 @@ public class ExamAttemptService {
                 .map(ExamResultQuestion::getQuestion)
                 .findFirst()
                 .orElse(null);
+    }
+
+    private List<AlternativeResponseDTO> generateAlternativesDTO(List<Alternative> alternatives){
+        return alternatives
+                .stream()
+                .map(alternativeMapper::toDTO)
+                .toList();
     }
 }
