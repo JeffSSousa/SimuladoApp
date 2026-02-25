@@ -19,8 +19,6 @@ public class ExamQuestion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long examQuestionId;
 
-    private Integer sequence;
-
     @ManyToOne
     @JoinColumn(name = "exam_id")
     private Exam exam;

@@ -7,7 +7,6 @@ import com.jeffssousa.SimuladoApp.entities.Question;
 public class ExamQuestionTestBuilder {
 
     private Long examQuestionId;
-    private Integer sequence = 1;
 
     private Exam exam = ExamTestBuilder.anExam().build();
     private Question question = QuestionTestBuilder.aQuestion().build();
@@ -24,11 +23,6 @@ public class ExamQuestionTestBuilder {
         return this;
     }
 
-    public ExamQuestionTestBuilder withSequence(Integer sequence) {
-        this.sequence = sequence;
-        return this;
-    }
-
     public ExamQuestionTestBuilder withExam(Exam exam) {
         this.exam = exam;
         return this;
@@ -42,7 +36,6 @@ public class ExamQuestionTestBuilder {
     public ExamQuestion build() {
         ExamQuestion examQuestion = new ExamQuestion();
         examQuestion.setExamQuestionId(examQuestionId);
-        examQuestion.setSequence(sequence);
         examQuestion.setExam(exam);
         examQuestion.setQuestion(question);
         return examQuestion;
