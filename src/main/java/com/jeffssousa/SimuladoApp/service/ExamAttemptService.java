@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ExamSessionService {
+public class ExamAttemptService {
 
     private final ExamResultRepository examResultRepository;
 

@@ -7,8 +7,7 @@ import com.jeffssousa.SimuladoApp.dto.QuestionAlternativeResponseDTO;
 import com.jeffssousa.SimuladoApp.entities.*;
 import com.jeffssousa.SimuladoApp.mapper.AlternativeMapper;
 import com.jeffssousa.SimuladoApp.repository.*;
-import com.jeffssousa.SimuladoApp.service.ExamQuestionService;
-import com.jeffssousa.SimuladoApp.service.ExamSessionService;
+import com.jeffssousa.SimuladoApp.service.ExamAttemptService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ExamSessionServiceTest {
+public class ExamAttemptServiceTest {
 
     @Mock
     private ExamResultRepository examResultRepository;
@@ -49,7 +48,7 @@ public class ExamSessionServiceTest {
     private AlternativeMapper alternativeMapper;
 
     @InjectMocks
-    private ExamSessionService examSessionService;
+    private ExamAttemptService examAttemptService;
 
     @Nested
     class startExam{
@@ -72,7 +71,7 @@ public class ExamSessionServiceTest {
             when(examRepository.findById(anyLong())).thenReturn(Optional.of(exam));
             when(examResultRepository.save(any(ExamResult.class))).thenReturn(examResult);
 
-            ExamResult savedExamResult = examSessionService.start(1L);
+            ExamResult savedExamResult = examAttemptService.start(1L);
 
             verify(examRepository, times(1)).findById(anyLong());
             verify(examResultRepository, times(1)).save(any(ExamResult.class));
@@ -141,7 +140,7 @@ public class ExamSessionServiceTest {
             when(alternativeRepository.findAllByQuestion(question)).thenReturn(list);
 
 
-            QuestionAlternativeResponseDTO responseDTO = examSessionService.getCurrentQuestion(examResultId);
+            QuestionAlternativeResponseDTO responseDTO = examAttemptService.getCurrentQuestion(examResultId);
 
 
             verify(examResultRepository, times(1)).findById(examResultId);
@@ -210,7 +209,7 @@ public class ExamSessionServiceTest {
             when(userAnswerRepository.save(any(UserAnswer.class))).thenReturn(userAnswer);
 
 
-            UserAnswer savedUserAnswer = examSessionService.answerQuestion(dto);
+            UserAnswer savedUserAnswer = examAttemptService.answerQuestion(dto);
 
             assertNotNull(savedUserAnswer);
             assertEquals(userAnswer.getQuestion().getDescription(),savedUserAnswer.getQuestion().getDescription());
