@@ -23,7 +23,7 @@ public class Alternative {
     private UUID alternativeId;
 
     private String description;
-    private boolean isCorrect;
+    private boolean correct;
 
     @ManyToOne
     @JoinColumn(name = "question_id")

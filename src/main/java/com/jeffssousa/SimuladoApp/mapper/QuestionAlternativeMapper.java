@@ -5,12 +5,14 @@ import com.jeffssousa.SimuladoApp.dto.CreateQuestionDTO;
 import com.jeffssousa.SimuladoApp.entities.Alternative;
 import com.jeffssousa.SimuladoApp.entities.Question;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface QuestionAlternativeMapper {
 
     Question toEntity (CreateQuestionDTO dto);
 
+    @Mapping(target = "correct", source = "correct")
     Alternative toEntity(AlternativeRequestDTO dto);
 
 }
