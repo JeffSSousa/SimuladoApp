@@ -62,12 +62,14 @@ public class ExamResultQuestionServiceTest {
                                             .anExamResultQuestion()
                                             .withExamResult(examResult)
                                             .withQuestion(listQuestion.getFirst())
+                                            .withStatusAnswered()
                                             .build(),
 
                                     ExamResultQuestionTestBuilder
                                             .anExamResultQuestion()
                                             .withExamResult(examResult)
                                             .withQuestion(listQuestion.getLast())
+                                            .withStatusAnswered()
                                             .build()
                                     );
 

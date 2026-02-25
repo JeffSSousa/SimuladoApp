@@ -53,6 +53,7 @@ public class ExamResultQuestionService {
             examResultQuestion.setExamResult(examResult);
             examResultQuestion.setQuestion(question);
             examResultQuestion.setSequence(sequence);
+            examResultQuestion.withStatusPending();
 
 
             examResultQuestions.add(examResultQuestion);

@@ -34,4 +34,8 @@ public class ExamResultQuestion {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    public void withStatusPending(){
+        this.status = "PENDING";
+    }
+
 }

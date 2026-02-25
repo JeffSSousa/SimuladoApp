@@ -9,7 +9,7 @@ import java.util.UUID;
 public class ExamResultQuestionTestBuilder {
 
     private UUID examResultQuestionId = UUID.randomUUID();
-    private String status = "Pending";
+    private String status = "PENDING";
     private Integer sequence = 1;
     private ExamResult examResult = ExamResultTestBuilder.anExamResult().build();
     private Question question = QuestionTestBuilder.aQuestion().build();
@@ -27,12 +27,12 @@ public class ExamResultQuestionTestBuilder {
     }
 
     public ExamResultQuestionTestBuilder withStatusPending() {
-        this.status = "Pending";
+        this.status = "PENDING";
         return this;
     }
 
     public ExamResultQuestionTestBuilder withStatusAnswered() {
-        this.status = "Answered";
+        this.status = "ANSWERED";
         return this;
     }
 
