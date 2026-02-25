@@ -7,6 +7,7 @@ import com.jeffssousa.SimuladoApp.entities.*;
 import com.jeffssousa.SimuladoApp.mapper.AlternativeMapper;
 import com.jeffssousa.SimuladoApp.repository.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Comparator;
@@ -63,6 +64,7 @@ public class ExamAttemptService {
         );
     }
 
+    @Transactional
     public UserAnswer answerQuestion(AnswerQuestionDTO dto) {
 
         ExamResult examResult = examResultRepository.findById(dto.examResultId())
@@ -79,9 +81,13 @@ public class ExamAttemptService {
         userAnswer.setExamResult(examResult);
         userAnswer.setQuestion(question);
         userAnswer.setAlternative(alternative);
+
+        int currentQuestion = examResult.getCurrentQuestion();
+        examResult.setCurrentQuestion(++currentQuestion);
+        examResultRepository.save(examResult);
+
         return userAnswerRepository.save(userAnswer);
 
-        //adicionar metodo mais um
         //adicionar metodo que marca como respondido
 
     }

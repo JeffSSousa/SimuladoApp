@@ -12,6 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -46,6 +48,9 @@ public class ExamAttemptServiceTest {
 
     @Mock
     private AlternativeMapper alternativeMapper;
+
+    @Captor
+    private ArgumentCaptor<ExamResult> argumentCaptor;
 
     @InjectMocks
     private ExamAttemptService examAttemptService;
@@ -165,9 +170,6 @@ public class ExamAttemptServiceTest {
         @DisplayName("Deve Responder a questão atual da tentativa com sucesso")
         void shouldAnswerCurrentQuestionWithSuccess(){
 
-            // acrescentar mais para o status atual
-            // finalizar
-
 
             UUID examResultId = UUID.randomUUID();
             UUID alternativeId = UUID.randomUUID();
@@ -207,12 +209,22 @@ public class ExamAttemptServiceTest {
             when(alternativeRepository.findById(alternativeId)).thenReturn(Optional.of(alternative));
             when(questionRepository.findById(questionId)).thenReturn(Optional.of(question));
             when(userAnswerRepository.save(any(UserAnswer.class))).thenReturn(userAnswer);
+            when(examResultRepository.save(any(ExamResult.class))).thenReturn(examResult);
 
 
             UserAnswer savedUserAnswer = examAttemptService.answerQuestion(dto);
 
+            verify(examResultRepository, times(1)).findById(examResultId);
+            verify(alternativeRepository, times(1)).findById(alternativeId);
+            verify(questionRepository, times(1)).findById(questionId);
+            verify(userAnswerRepository, times(1)).save(any(UserAnswer.class));
+            verify(examResultRepository, times(1)).save(argumentCaptor.capture());
+
+            ExamResult captureAttempt = argumentCaptor.getValue();
+
             assertNotNull(savedUserAnswer);
             assertEquals(userAnswer.getQuestion().getDescription(),savedUserAnswer.getQuestion().getDescription());
+            assertEquals(2,captureAttempt.getCurrentQuestion());
 
         }
 
