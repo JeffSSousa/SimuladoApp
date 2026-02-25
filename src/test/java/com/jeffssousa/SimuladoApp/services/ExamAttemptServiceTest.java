@@ -50,7 +50,10 @@ public class ExamAttemptServiceTest {
     private AlternativeMapper alternativeMapper;
 
     @Captor
-    private ArgumentCaptor<ExamResult> argumentCaptor;
+    private ArgumentCaptor<ExamResult> examResultCaptor;
+
+    @Captor
+    private ArgumentCaptor<ExamResultQuestion> examResultQuestionCaptor;
 
     @InjectMocks
     private ExamAttemptService examAttemptService;
@@ -205,11 +208,15 @@ public class ExamAttemptServiceTest {
                     alternativeId
             );
 
+            ExamResultQuestion examResultQuestion = ExamResultQuestionTestBuilder.anExamResultQuestion().build();
+
             when(examResultRepository.findById(examResultId)).thenReturn(Optional.of(examResult));
             when(alternativeRepository.findById(alternativeId)).thenReturn(Optional.of(alternative));
             when(questionRepository.findById(questionId)).thenReturn(Optional.of(question));
             when(userAnswerRepository.save(any(UserAnswer.class))).thenReturn(userAnswer);
             when(examResultRepository.save(any(ExamResult.class))).thenReturn(examResult);
+            when(examResultQuestionRepository.findByQuestion(question)).thenReturn(Optional.of(examResultQuestion));
+            when(examResultQuestionRepository.save(any(ExamResultQuestion.class))).thenReturn(examResultQuestion);
 
 
             UserAnswer savedUserAnswer = examAttemptService.answerQuestion(dto);
@@ -218,13 +225,17 @@ public class ExamAttemptServiceTest {
             verify(alternativeRepository, times(1)).findById(alternativeId);
             verify(questionRepository, times(1)).findById(questionId);
             verify(userAnswerRepository, times(1)).save(any(UserAnswer.class));
-            verify(examResultRepository, times(1)).save(argumentCaptor.capture());
+            verify(examResultRepository, times(1)).save(examResultCaptor.capture());
+            verify(examResultQuestionRepository, times(1)).findByQuestion(question);
+            verify(examResultQuestionRepository, times(1)).save(examResultQuestionCaptor.capture());
 
-            ExamResult captureAttempt = argumentCaptor.getValue();
+            ExamResult capturedAttempt = examResultCaptor.getValue();
+            ExamResultQuestion capturedExamResultQuestion = examResultQuestionCaptor.getValue();
 
             assertNotNull(savedUserAnswer);
             assertEquals(userAnswer.getQuestion().getDescription(),savedUserAnswer.getQuestion().getDescription());
-            assertEquals(2,captureAttempt.getCurrentQuestion());
+            assertEquals(2,capturedAttempt.getCurrentQuestion());
+            assertEquals("ANSWERED", capturedExamResultQuestion.getStatus());
 
         }
 

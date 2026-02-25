@@ -86,9 +86,14 @@ public class ExamAttemptService {
         examResult.setCurrentQuestion(++currentQuestion);
         examResultRepository.save(examResult);
 
+
+        ExamResultQuestion examResultQuestion = examResultQuestionRepository.findByQuestion(question)
+                .orElseThrow(() -> new EntityNotFoundException("ExamResultQuestion não encontrado!"));
+        examResultQuestion.setStatus("ANSWERED");
+        examResultQuestionRepository.save(examResultQuestion);
+
         return userAnswerRepository.save(userAnswer);
 
-        //adicionar metodo que marca como respondido
 
     }
 
