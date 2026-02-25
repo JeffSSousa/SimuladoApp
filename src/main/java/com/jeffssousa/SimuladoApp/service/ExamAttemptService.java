@@ -88,7 +88,7 @@ public class ExamAttemptService {
 
     private Question currentQuestion(List<ExamResultQuestion> questions) {
         return questions.stream()
-                .filter(q -> q.getStatus().equals("Pending"))
+                .filter(q -> q.getStatus().equals("PENDING"))
                 .sorted(Comparator.comparing(ExamResultQuestion::getSequence))
                 .map(ExamResultQuestion::getQuestion)
                 .findFirst()
